@@ -1,0 +1,144 @@
+@import "tailwindcss";
+
+/* ===== Linear design system tokens (see DESIGN.md) ===== */
+@theme {
+  /* Surface ladder — hierarchy via lift, not shadow */
+  --color-canvas: #010102;
+  --color-surface-1: #08090a;
+  --color-surface-2: #101113;
+  --color-surface-3: #1a1b1e;
+  --color-surface-4: #232428;
+  --color-hairline: #23252a;
+  --color-hairline-strong: #34363c;
+
+  /* Single chromatic accent — lavender-blue */
+  --color-primary: #5e6ad2;
+  --color-primary-hover: #828fff;
+  --color-primary-focus: #5e69d1;
+
+  /* Text */
+  --color-ink: #f7f8f8;
+  --color-ink-muted: #d0d6e0;
+  --color-ink-subtle: #8a8f98;
+  --color-ink-tertiary: #62666d;
+
+  /* Only semantic color on the marketing surface */
+  --color-success: #27a644;
+
+  --font-sans: var(--font-inter), -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Radius scale */
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Display type: aggressive negative tracking, weight 600 */
+.display-xl {
+  font-size: clamp(2.5rem, 6vw + 1rem, 5rem); /* 40 → 80px */
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.0375em;
+}
+.display-lg {
+  font-size: clamp(2rem, 3.5vw + 1rem, 3.5rem); /* 32 → 56px */
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.032em;
+}
+.display-md {
+  font-size: clamp(1.75rem, 2vw + 1rem, 2.5rem); /* 28 → 40px */
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+.eyebrow {
+  font-size: 0.8125rem; /* 13px */
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.04em; /* positive tracking marks taxonomy */
+  text-transform: uppercase;
+  color: var(--color-ink-subtle);
+}
+
+/* Subtle top-edge highlight on lifted panels — the "pixel-rendered" feel */
+.lift-edge {
+  box-shadow: inset 0 1px 0 0 rgb(255 255 255 / 0.04);
+}
+
+/* Accessible focus ring per spec: 2px primary-focus at ~50% */
+*:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-primary-focus) 60%, transparent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ===== Atmosphere — lean into the lavender accent for warmth ===== */
+
+/* Headline gradient: bright ink fading to a lavender kiss */
+.text-gradient {
+  background: linear-gradient(180deg, #ffffff 0%, #c7c9e6 58%, #8b8fd6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Soft radial glow — sits behind the hero */
+.hero-glow {
+  position: absolute;
+  inset: -25% 0 auto 0;
+  height: 640px;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(55% 55% at 22% 0%, color-mix(in srgb, var(--color-primary) 24%, transparent) 0%, transparent 70%),
+    radial-gradient(45% 45% at 82% 8%, color-mix(in srgb, #7c5cff 18%, transparent) 0%, transparent 70%);
+  filter: blur(24px);
+}
+
+/* Faint dot grid texture for the dark canvas */
+.dot-grid {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(color-mix(in srgb, var(--color-ink) 7%, transparent) 1px, transparent 1px);
+  background-size: 22px 22px;
+  -webkit-mask-image: radial-gradient(75% 55% at 50% 0%, #000 0%, transparent 75%);
+  mask-image: radial-gradient(75% 55% at 50% 0%, #000 0%, transparent 75%);
+}
+
+/* Card accent glow on hover */
+.card-glow {
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+.card-glow:hover {
+  border-color: color-mix(in srgb, var(--color-primary) 45%, var(--color-hairline));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--color-primary) 25%, transparent),
+    0 12px 40px -12px color-mix(in srgb, var(--color-primary) 35%, transparent);
+}
+
+/* Eyebrow accent: a small lavender lead-in bar */
+.eyebrow-accent::before {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 1px;
+  margin-right: 10px;
+  vertical-align: middle;
+  background: var(--color-primary);
+}
