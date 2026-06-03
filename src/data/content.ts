@@ -136,33 +136,51 @@ export type SkillGroup = { title: string; items: string[] };
 
 export const skills: SkillGroup[] = [
   {
-    title: "Finance & Modelling",
+    title: "Platform, Terminal & Tools",
     items: [
-      "Financial modelling",
-      "DCF valuation",
-      "Derivatives pricing",
-      "Equity analysis",
-      "Excel (VLOOKUP, pivot tables)",
+      "Bloomberg",
+      "Reuters",
+      "Microsoft Excel",
+      "Power BI (basic)",
     ],
   },
   {
-    title: "AI & LLMs",
+    title: "Finance & Modelling",
     items: [
-      "Anthropic Claude API",
-      "Google Gemini API",
-      "Prompt engineering",
-      "Chain-of-thought / few-shot",
+      "Financial modelling",
+      "Valuation",
+      "DCF",
+      "Derivatives pricing",
+      "Equity analysis",
+    ],
+  },
+  {
+    title: "AI Tools",
+    items: [
+      "Claude Code",
+      "ChatGPT",
+      "Gemini",
+      "NotebookLM",
+      "Obsidian",
+    ],
+  },
+  {
+    title: "AI-Assisted Development & Prompt Engineering",
+    items: [
+      "Build & ship apps with Claude & Gemini APIs",
+      "System / role prompting, few-shot, chain-of-thought",
       "Structured output & prompt chaining",
+      "Context engineering",
+      "AI-assisted design, code review & testing",
     ],
   },
   {
     title: "Programming & Tools",
     items: [
-      "Python (pandas, APIs)",
+      "Python (pandas, API calls, scripts)",
+      "JSON",
       "Git / GitHub",
-      "REST APIs / JSON",
-      "Next.js · Supabase · Vercel",
-      "Power BI (basic)",
+      "REST APIs",
     ],
   },
 ];
