@@ -2,6 +2,7 @@ import { projects, type Project } from "@/data/content";
 import { Container, Eyebrow, Badge, Button } from "./ui";
 import { ArrowUpRight } from "./icons";
 import { ScreenshotPanel } from "./ScreenshotPanel";
+import { Reveal } from "./Reveal";
 
 function statusTone(status: string): "live" | "active" | "neutral" {
   if (/live/i.test(status)) return "live";
@@ -62,16 +63,18 @@ export function Projects() {
   return (
     <section id="projects" className="scroll-mt-20 border-t border-hairline/60 py-20 sm:py-28">
       <Container>
-        <div className="mb-14 max-w-2xl">
+        <Reveal className="mb-14 max-w-2xl">
           <Eyebrow>Selected work</Eyebrow>
           <h2 className="display-md text-ink">
             Things I&apos;ve built where finance meets AI.
           </h2>
-        </div>
+        </Reveal>
 
         <div className="space-y-20 sm:space-y-28">
           {projects.map((project, i) => (
-            <ProjectRow key={project.name} project={project} flip={i % 2 === 1} />
+            <Reveal key={project.name}>
+              <ProjectRow project={project} flip={i % 2 === 1} />
+            </Reveal>
           ))}
         </div>
       </Container>

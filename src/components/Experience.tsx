@@ -1,5 +1,6 @@
 import { experience, education } from "@/data/content";
 import { Container, Eyebrow } from "./ui";
+import { Reveal } from "./Reveal";
 
 export function Experience() {
   return (
@@ -8,10 +9,12 @@ export function Experience() {
         <div className="grid gap-14 lg:grid-cols-[1fr_1.4fr]">
           {/* Left: education + heading */}
           <div>
-            <Eyebrow>Background</Eyebrow>
-            <h2 className="display-md text-ink">Experience &amp; education.</h2>
+            <Reveal>
+              <Eyebrow>Background</Eyebrow>
+              <h2 className="display-md text-ink">Experience &amp; education.</h2>
+            </Reveal>
 
-            <div className="mt-10 rounded-xl border border-hairline bg-surface-1 p-6 lift-edge">
+            <Reveal delay={120} className="mt-10 rounded-xl border border-hairline bg-surface-1 p-6 lift-edge">
               <h3 className="text-lg font-medium text-ink">{education.degree}</h3>
               <p className="mt-1 text-ink-muted">{education.school}</p>
               <p className="mt-1 text-sm text-ink-subtle">
@@ -25,14 +28,15 @@ export function Experience() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </Reveal>
           </div>
 
           {/* Right: experience timeline */}
           <div className="space-y-8">
-            {experience.map((job) => (
-              <div
+            {experience.map((job, i) => (
+              <Reveal
                 key={`${job.role}-${job.org}`}
+                delay={i * 100}
                 className="border-l border-hairline pl-6"
               >
                 <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
@@ -41,14 +45,14 @@ export function Experience() {
                 </div>
                 <p className="mt-0.5 text-primary/90">{job.org}</p>
                 <ul className="mt-3 space-y-2">
-                  {job.points.map((p, i) => (
-                    <li key={i} className="flex gap-3 text-sm leading-relaxed text-ink-subtle">
+                  {job.points.map((p, j) => (
+                    <li key={j} className="flex gap-3 text-sm leading-relaxed text-ink-subtle">
                       <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-ink-tertiary" />
                       {p}
                     </li>
                   ))}
                 </ul>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>

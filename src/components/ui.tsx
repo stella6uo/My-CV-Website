@@ -62,16 +62,18 @@ export function Button({
   withArrow = false,
 }: ButtonProps) {
   const base =
-    "inline-flex h-10 items-center gap-1.5 rounded-md px-4 text-sm font-medium transition-colors";
+    "group inline-flex h-10 items-center gap-1.5 rounded-md px-4 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0";
   const styles =
     variant === "primary"
-      ? "bg-primary text-white hover:bg-primary-hover"
+      ? "bg-primary text-white hover:bg-primary-hover hover:shadow-[0_8px_24px_-8px_color-mix(in_srgb,var(--color-primary)_70%,transparent)]"
       : "bg-surface-1 text-ink ring-1 ring-hairline hover:ring-hairline-strong hover:bg-surface-2";
 
   const content = (
     <>
       {children}
-      {withArrow && <ArrowUpRight className="h-4 w-4" />}
+      {withArrow && (
+        <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+      )}
     </>
   );
 

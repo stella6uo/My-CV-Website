@@ -1,19 +1,21 @@
 import { profile } from "@/data/content";
 import { Container, Button, Eyebrow } from "./ui";
 import { Mail, LinkedIn, Github } from "./icons";
+import { Reveal } from "./Reveal";
 
 export function Contact() {
   return (
     <section id="contact" className="scroll-mt-20 py-20 sm:py-28">
       <Container>
-        <div className="rounded-2xl border border-hairline bg-surface-1 p-10 text-center lift-edge sm:p-16">
+        <Reveal className="rounded-2xl border border-hairline bg-surface-1 p-10 text-center lift-edge sm:p-16">
           <Eyebrow>Contact</Eyebrow>
           <h2 className="display-md mx-auto max-w-2xl text-ink">
             Looking for an analyst who can also build the tools.
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-ink-subtle">
-            Open to analyst-track roles in finance across the UK. The fastest way to reach
-            me is email.
+            Immediately available and open to positions across the UK — strongest in
+            research, financial analysis, risk, wealth management and data. The fastest way
+            to reach me is email.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Button href={`mailto:${profile.email}`} withArrow>
@@ -23,7 +25,7 @@ export function Contact() {
               Download CV
             </Button>
           </div>
-        </div>
+        </Reveal>
       </Container>
 
       <footer className="mt-20 border-t border-hairline/60">

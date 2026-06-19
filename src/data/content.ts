@@ -186,3 +186,19 @@ export const skills: SkillGroup[] = [
 ];
 
 export const languages = ["English (fluent)", "Mandarin (fluent)", "Cantonese (native)"];
+
+// What I'm looking for — shown in the "Open to work" section.
+export const seeking = {
+  // Short status line for the section eyebrow / pill.
+  status: "Graduate · available immediately · UK",
+  blurb:
+    "Economics & Finance graduate, immediately available and open to positions right across the UK. The areas below are where I'm strongest — but I'm keeping it broad, so if there's a fit, I'd like to hear from you.",
+  // Target areas, broad on purpose.
+  areas: [
+    "Equity & Fund Research",
+    "Financial Analysis",
+    "Risk",
+    "Wealth Management",
+    "Data Analysis",
+  ],
+};
