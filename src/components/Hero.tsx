@@ -14,22 +14,9 @@ const SCROLL_LENGTH = 2.2;
 
 export function Hero() {
   const ref = useRef<HTMLElement | null>(null);
-  const aiRef = useRef<HTMLSpanElement | null>(null);
   const ticking = useRef(false);
   const [progress, setProgress] = useState(0);
   const [reduced, setReduced] = useState(false);
-  const [aiWidth, setAiWidth] = useState(0);
-
-  // Measure the "+ AI" width so we can recentre the whole phrase as it lands.
-  useEffect(() => {
-    const el = aiRef.current;
-    if (!el) return;
-    const measure = () => setAiWidth(el.offsetWidth);
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
 
   // Respect reduced-motion: render everything visible, no pinning.
   useEffect(() => {
@@ -69,7 +56,7 @@ export function Hero() {
   const seg = (a: number, b: number) =>
     reduced ? 1 : easeOut(clamp((progress - a) / (b - a), 0, 1));
 
-  const ai = seg(0.04, 0.22); // "+ AI" joins
+  const join = seg(0.04, 0.22); // second headline line joins
   const name = seg(0.26, 0.44); // name + eyebrow
   const headline = seg(0.48, 0.68); // descriptive line
   const cta = seg(0.56, 0.78); // buttons + languages
@@ -91,25 +78,17 @@ export function Hero() {
         <div className="dot-grid" aria-hidden="true" />
 
         <Container className="flex flex-col items-center py-24 text-center">
-          {/* Stage 1 + 2 — "Finance" loads, "+ AI" joins on scroll */}
+          {/* Stage 1 + 2 — lead line loads, second line joins on scroll */}
           <h1 className="rise hero-display">
+            <span className="block text-gradient">{profile.heroLead}</span>{" "}
             <span
-              className="relative inline-block"
-              style={{ transform: `translateX(${(-aiWidth / 2) * ai}px)` }}
+              className="block text-primary"
+              style={{
+                opacity: join,
+                transform: `translateY(${(1 - join) * 0.35}em)`,
+              }}
             >
-              <span className="text-gradient">Finance</span>
-              <span
-                ref={aiRef}
-                className="absolute left-full top-0 whitespace-nowrap pl-[0.22em]"
-                style={{
-                  opacity: ai,
-                  transform: `translateX(${(1 - ai) * 0.5}em)`,
-                }}
-                aria-hidden={ai < 0.5}
-              >
-                <span className="text-ink-subtle">+</span>{" "}
-                <span className="text-primary">AI</span>
-              </span>
+              {profile.heroJoin}
             </span>
           </h1>
 

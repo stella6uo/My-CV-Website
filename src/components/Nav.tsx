@@ -6,9 +6,9 @@ import { Container } from "./ui";
 
 const links = [
   { label: "Open to work", href: "#open-to" },
-  { label: "Projects", href: "#projects" },
   { label: "Experience", href: "#experience" },
   { label: "Skills", href: "#skills" },
+  { label: "Projects", href: "#projects" },
 ];
 
 export function Nav() {

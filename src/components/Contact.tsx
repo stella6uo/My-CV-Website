@@ -10,12 +10,11 @@ export function Contact() {
         <Reveal className="rounded-2xl border border-hairline bg-surface-1 p-10 text-center lift-edge sm:p-16">
           <Eyebrow>Contact</Eyebrow>
           <h2 className="display-md mx-auto max-w-2xl text-ink">
-            Looking for an analyst who can also build the tools.
+            Looking for someone who gets the numbers right?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-ink-subtle">
-            Immediately available and open to positions across the UK — strongest in
-            research, financial analysis, risk, wealth management and data. The fastest way
-            to reach me is email.
+            Available immediately for finance assistant, accounts and finance graduate
+            roles, based in Leeds. The fastest way to reach me is email.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Button href={`mailto:${profile.email}`} withArrow>

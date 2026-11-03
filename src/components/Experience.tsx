@@ -28,6 +28,9 @@ export function Experience() {
                   </li>
                 ))}
               </ul>
+              {education.note && (
+                <p className="mt-4 text-sm text-ink-subtle">{education.note}</p>
+              )}
             </Reveal>
           </div>
 

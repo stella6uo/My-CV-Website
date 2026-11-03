@@ -13,13 +13,13 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Anson Ng — Finance + AI",
+  title: "Anson Ng | Finance Operations",
   description:
-    "Economics & Finance graduate applying AI to investment workflows. Builder of trading tools, automation pipelines, and live products.",
+    "Economics & Finance graduate in Leeds, looking for finance operations roles: reconciliations, invoice and purchase order matching, advanced Excel, and automating manual processes.",
   openGraph: {
-    title: "Anson Ng — Finance + AI",
+    title: "Anson Ng | Finance Operations",
     description:
-      "Economics & Finance graduate applying AI to investment workflows.",
+      "Economics & Finance graduate in Leeds: reconciliations, invoice matching, advanced Excel and process automation.",
     type: "website",
   },
 };

@@ -64,9 +64,9 @@ export function Projects() {
     <section id="projects" className="scroll-mt-20 border-t border-hairline/60 py-20 sm:py-28">
       <Container>
         <Reveal className="mb-14 max-w-2xl">
-          <Eyebrow>Selected work</Eyebrow>
+          <Eyebrow>Side projects</Eyebrow>
           <h2 className="display-md text-ink">
-            Things I&apos;ve built where finance meets AI.
+            Tools I&apos;ve built to take the manual work out.
           </h2>
         </Reveal>
 

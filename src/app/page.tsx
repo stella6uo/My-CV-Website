@@ -14,8 +14,8 @@ export default function Home() {
         <Hero />
         <OpenTo />
         <Experience />
-        <Projects />
         <Skills />
+        <Projects />
         <Contact />
       </main>
     </>

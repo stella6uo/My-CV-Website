@@ -11,9 +11,7 @@ export function OpenTo() {
       <Container>
         <Reveal className="max-w-2xl">
           <Eyebrow>Open to work</Eyebrow>
-          <h2 className="display-md text-ink">
-            Open to positions across the UK.
-          </h2>
+          <h2 className="display-md text-ink">{seeking.heading}</h2>
           <p className="mt-4 leading-relaxed text-ink-subtle">{seeking.blurb}</p>
         </Reveal>
 

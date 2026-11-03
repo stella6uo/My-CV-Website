@@ -7,15 +7,16 @@ export const profile = {
   name: "Anson Ng",
   fullName: "Ng Cheuk Lam, Anson",
   location: "Leeds, UK",
-  // Headline shown big in the hero. Two lines, the accent word gets highlighted.
-  tagline: "Finance + AI.",
+  // Hero headline: the lead line loads first, the second line joins on scroll.
+  heroLead: "Finance,",
+  heroJoin: "reconciled.",
   subtagline:
-    "Economics & Finance graduate building tools that make investing sharper — automated signal pipelines, an LLM trading journal, and live products with real users.",
+    "Economics & Finance graduate in Leeds, looking for a role in finance operations. I check invoices against orders, reconcile records back to source, and automate the routine steps so the numbers stay right.",
   email: "ansonng0422@gmail.com",
   phone: "07873 827027",
   linkedin: "https://www.linkedin.com/in/anson-ng-cl/",
   github: "https://github.com/stella6uo",
-  // CV file lives in /public — drop your PDF there as cv.pdf (see note in README)
+  // CV file lives in /public as cv.pdf (general finance operations CV)
   cvHref: "/cv.pdf",
 };
 
@@ -40,20 +41,20 @@ export type Project = {
 export const projects: Project[] = [
   {
     name: "Trading-Signal Telegram Bot",
-    tagline: "Automated relevance-filtered signal pipeline",
+    tagline: "Replaced a daily manual scan with a scheduled pipeline",
     description:
-      "Ingests posts from finance accounts on X via RSS, uses Gemini to score each against trading-relevance criteria, and forwards qualifying summaries to a Telegram channel. Scheduled on a Cloudflare Worker cron, executed by GitHub Actions.",
+      "Pulls posts from finance accounts on X via RSS, uses Gemini to check each one against defined criteria, and forwards only what qualifies as a short summary to Telegram. Scheduled on a Cloudflare Worker cron and run by GitHub Actions, then tested and refined until it ran reliably unattended.",
     stack: ["Python", "Google Gemini API", "GitHub Actions", "Cloudflare Workers"],
     // TODO: add GitHub repo link if public
     // repoHref: "https://github.com/stella6uo/signal-bot",
-    status: "Personal project",
+    status: "Automation",
     image: "/projects/signal-bot.png",
   },
   {
     name: "LLM-Assisted Trading Journal",
-    tagline: "Structured trade journal + performance dashboard",
+    tagline: "Every trade recorded, checked and reviewed",
     description:
-      "Captures entries, exits, position sizing and rationale, with computed win-rate, risk/reward and P&L over time. Integrates the Claude API to review trades and surface decision patterns, common mistakes, and risk-management weaknesses.",
+      "Captures entry, exit, position size and rationale for each trade, and computes win rate, risk/reward and P&L over time. The Claude API reviews the records and flags patterns and repeated mistakes in my decisions.",
     stack: ["Python", "Anthropic Claude API", "JSON"],
     // TODO: add GitHub repo link if public
     // repoHref: "https://github.com/stella6uo/trading-journal",
@@ -61,25 +62,25 @@ export const projects: Project[] = [
     image: "/projects/trading-journal.png",
   },
   {
-    name: "Sheep Mai Mai — Mobile App",
-    tagline: "Company's first iOS & Android app, built solo",
-    description:
-      "Leading end-to-end design and development of a specialty coffee roaster's first mobile app for the App Store and Google Play — translating the Wix-backed online store into a mobile-native experience, with a paid brewing-log subscription. Working solo from concept through to release.",
-    // TODO: confirm the exact stack — adjust if not Expo/React Native
-    stack: ["React Native", "Expo", "Wix Stores"],
-    status: "In development",
-    image: "/projects/sheepmaimai.png",
-  },
-  {
     name: "Casabrew",
-    tagline: "Coffee logging web app — live, with real users",
+    tagline: "Learned an unfamiliar stack and shipped a live product",
     description:
-      "Designed and shipped a full web app, in use by cafés, roasters, and coffee specialists to record extraction parameters and sensory data. Concept to live deployment with real users.",
+      "A web app used by cafés, roasters and coffee specialists to log brew recipes and tasting data. Built solo from concept to live deployment, with real users relying on the data being right.",
     stack: ["Next.js", "Supabase", "Vercel"],
     liveHref: "https://casabrew.vercel.app",
     liveLabel: "casabrew.vercel.app",
     status: "Live product",
     image: "/projects/casabrew.png",
+  },
+  {
+    name: "Sheep Mai Mai Mobile App",
+    tagline: "The company's first iOS & Android app, built solo",
+    description:
+      "Designing and building a specialty coffee retailer's first app for the App Store and Google Play, bringing the Wix online store to mobile with a paid brewing-log subscription. Working solo from concept through to release.",
+    // TODO: confirm the exact stack — adjust if not Expo/React Native
+    stack: ["React Native", "Expo", "Wix Stores"],
+    status: "In development",
+    image: "/projects/sheepmaimai.png",
   },
 ];
 
@@ -93,29 +94,39 @@ export type Experience = {
 export const experience: Experience[] = [
   {
     role: "Financial Research Assistant",
-    org: "GNS Intelligent Technology (HK) Ltd",
-    period: "Jan 2026 – Jun 2026",
+    org: "GNS Intelligent Technology (HK) Ltd · Remote",
+    period: "Jan 2026 – Present",
     points: [
-      "Built DCF valuation models, assessed credit risk, and evaluated investment opportunities to support strategic decisions.",
-      "Designed AI-driven automation workflows for client projects, streamlining manual processes and improving efficiency.",
+      "Maintain workbooks of transaction, valuation and performance data, checking outputs line by line against source and tracing any difference back to the underlying record rather than adjusting around it.",
+      "Deliver recurring reports to set dates alongside ad-hoc requests, and answer colleague and client queries clearly by email and call.",
+      "Automated recurring manual steps in reporting, and documented each process so someone else could run and check it.",
     ],
   },
   {
     role: "Inventory & E-commerce Operations Coordinator",
-    org: "Sheep Mai Mai (Remote)",
+    org: "Sheep Mai Mai · Remote",
     period: "Apr 2026 – Present",
     points: [
-      "Lead end-to-end design and development of the company's first mobile app for the App Store and Google Play, working solo.",
-      "Run inventory across multiple SKUs/suppliers and build Wix product listings, managing the full customer journey.",
+      "Check supplier invoices and shipping paperwork against purchase orders and agreed pricing before the cost is accepted, and follow any mismatch through to a corrected invoice.",
+      "Raise purchase orders with specialty coffee roasters worldwide, then reconcile each order against what arrives and what is invoiced.",
+      "Keep stock, cost and pricing records accurate across Wix and Excel for multiple SKUs and suppliers.",
     ],
   },
   {
-    role: "Active Personal Investor — US Equities",
+    role: "Barista",
+    org: "London Coffee Festival",
+    period: "May 2026",
+    points: [
+      "Served hundreds of customers a day in a busy bar team, keeping orders accurate and the queue moving at peak times.",
+    ],
+  },
+  {
+    role: "Personal Investor, US Equities",
     org: "Self-directed",
     period: "2020 – Present",
     points: [
-      "Five years of self-directed investing using fundamental and technical analysis with disciplined risk management.",
-      "Review performance through a self-built LLM trade journal; study market structure and macro drivers continuously.",
+      "Record every trade with entry, exit, size and rationale, and reconcile my records against broker statements, investigating any difference before moving on.",
+      "Track win rate, risk/reward and P&L through a journal and dashboard I built myself.",
     ],
   },
 ];
@@ -126,61 +137,45 @@ export const education = {
   period: "2022 – 2025",
   result: "2:1 (67.3%)",
   modules: [
-    { name: "Private Equity & Venture Capital", grade: "80% — A" },
-    { name: "Derivative Securities", grade: "75% — A" },
-    { name: "Financial Modelling", grade: "71% — A" },
+    { name: "Intermediate Mathematics for Economics", grade: "87%" },
+    { name: "Quantitative Techniques for Business & Finance", grade: "73%" },
+    { name: "Financial Modelling (Excel)", grade: "71%" },
+    { name: "Portfolio Management", grade: "70%" },
   ],
+  note: "First-class marks in six modules. All 18 modules passed at the first attempt.",
 };
 
 export type SkillGroup = { title: string; items: string[] };
 
 export const skills: SkillGroup[] = [
   {
-    title: "Platform, Terminal & Tools",
+    title: "Finance Operations",
     items: [
-      "Bloomberg",
-      "Reuters",
-      "Microsoft Excel",
-      "Power BI (basic)",
+      "Invoice & purchase order matching",
+      "Reconciliation to source & statements",
+      "Investigating & resolving discrepancies",
+      "Accurate record keeping",
+      "Recurring reporting to deadlines",
     ],
   },
   {
-    title: "Finance & Modelling",
+    title: "Excel & Systems",
     items: [
-      "Financial modelling",
-      "Valuation",
-      "DCF",
-      "Derivatives pricing",
-      "Equity analysis",
+      "Advanced Excel: XLOOKUP, SUMIFS, IFERROR",
+      "Pivot tables & reconciliation workbooks",
+      "Word, PowerPoint, Outlook, Teams",
+      "Power BI (basic), Wix",
+      "Quick to learn new finance systems",
     ],
   },
   {
-    title: "AI Tools",
+    title: "Process Improvement",
     items: [
-      "Claude Code",
-      "ChatGPT",
-      "Gemini",
-      "NotebookLM",
-      "Obsidian",
-    ],
-  },
-  {
-    title: "AI-Assisted Development & Prompt Engineering",
-    items: [
-      "Build & ship apps with Claude & Gemini APIs",
-      "System / role prompting, few-shot, chain-of-thought",
-      "Structured output & prompt chaining",
-      "Context engineering",
-      "AI-assisted design, code review & testing",
-    ],
-  },
-  {
-    title: "Programming & Tools",
-    items: [
-      "Python (pandas, API calls, scripts)",
-      "JSON",
-      "Git / GitHub",
-      "REST APIs",
+      "Automating recurring manual steps",
+      "Documented, repeatable procedures",
+      "Python (pandas, scripts)",
+      "SQL (basic)",
+      "AI tools: Claude, ChatGPT, Copilot",
     ],
   },
 ];
@@ -189,16 +184,15 @@ export const languages = ["English (fluent)", "Mandarin (fluent)", "Cantonese (n
 
 // What I'm looking for — shown in the "Open to work" section.
 export const seeking = {
-  // Short status line for the section eyebrow / pill.
-  status: "Graduate · available immediately · UK",
+  heading: "Looking for my first finance operations role.",
   blurb:
-    "Economics & Finance graduate, immediately available and open to positions right across the UK. The areas below are where I'm strongest — but I'm keeping it broad, so if there's a fit, I'd like to hear from you.",
-  // Target areas, broad on purpose.
+    "Economics & Finance graduate based in Leeds, and also open to Manchester and London. I'm looking for a full-time role in the day-to-day finance work that keeps cash, invoices and accounts accurate, and I'm keen to work towards AAT, ACCA or CIMA alongside it.",
+  // Target roles.
   areas: [
-    "Equity & Fund Research",
-    "Financial Analysis",
-    "Risk",
-    "Wealth Management",
-    "Data Analysis",
+    "Finance Assistant",
+    "Cash Office & Order to Cash",
+    "Accounts Payable & Receivable",
+    "Assistant Accountant",
+    "Finance Graduate Programmes",
   ],
 };
