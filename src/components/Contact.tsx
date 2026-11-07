@@ -1,48 +1,64 @@
-import { profile } from "@/data/content";
-import { Container, Button, Eyebrow } from "./ui";
-import { Mail, LinkedIn, Github } from "./icons";
-import { Reveal } from "./Reveal";
+import { profile, contactLine } from "@/data/content";
+import { Container, Button } from "./ui";
+import { Mail } from "./icons";
 
+const display = (url: string) => url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
+
+// The remittance slip: a dashed tear line, then the contact details as fields.
 export function Contact() {
+  const rows = [
+    { label: "Email", value: profile.email, href: `mailto:${profile.email}`, external: false },
+    { label: "LinkedIn", value: display(profile.linkedin), href: profile.linkedin, external: true },
+    { label: "CV", value: "Download PDF", href: profile.cvHref, external: true },
+  ];
+
   return (
-    <section id="contact" className="scroll-mt-20 py-20 sm:py-28">
+    <section id="contact" className="pt-20 sm:pt-24">
       <Container>
-        <Reveal className="rounded-2xl border border-hairline bg-surface-1 p-10 text-center lift-edge sm:p-16">
-          <Eyebrow>Contact</Eyebrow>
-          <h2 className="display-md mx-auto max-w-2xl text-ink">
-            Looking for someone who gets the numbers right?
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-ink-subtle">
-            Available immediately for finance assistant, accounts and finance graduate
-            roles, based in Leeds. The fastest way to reach me is email.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Button href={`mailto:${profile.email}`} withArrow>
-              {profile.email}
-            </Button>
-            <Button href={profile.cvHref} variant="secondary" external>
-              Download CV
-            </Button>
+        <div className="enter border-t-2 border-dashed border-rule-strong pt-3">
+          <p className="eyebrow">Contact</p>
+
+          <div className="mt-8 grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+            <div>
+              <h2 className="display-md text-ink">Looking for someone who gets the numbers right?</h2>
+              <p className="mt-5 max-w-xl leading-relaxed text-ink-muted">{contactLine}</p>
+              <div className="no-print mt-8 flex flex-wrap gap-3">
+                <Button href={`mailto:${profile.email}`}>
+                  <Mail className="h-4 w-4" />
+                  Email me
+                </Button>
+                <Button href={profile.cvHref} variant="secondary" external withArrow>
+                  Download CV
+                </Button>
+              </div>
+            </div>
+
+            <dl className="self-end border-t border-ink font-mono text-sm">
+              {rows.map((r) => (
+                <div key={r.label} className="grid grid-cols-[6.5rem_1fr] gap-4 border-b border-rule py-3">
+                  <dt className="pt-0.5 text-xs uppercase tracking-[0.1em] text-ink-subtle">{r.label}</dt>
+                  <dd className="min-w-0 break-words">
+                    <a
+                      href={r.href}
+                      className="link text-ink"
+                      {...(r.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                    >
+                      {r.value}
+                    </a>
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
-        </Reveal>
+        </div>
       </Container>
 
-      <footer className="mt-20 border-t border-hairline/60">
-        <Container className="flex flex-col items-center justify-between gap-4 py-10 sm:flex-row">
-          <p className="text-sm text-ink-tertiary">
+      <footer className="mt-20 border-t border-rule">
+        <Container className="flex flex-col justify-between gap-2 py-8 font-mono text-xs uppercase tracking-[0.08em] text-ink-subtle sm:flex-row">
+          <p>
             © {new Date().getFullYear()} {profile.fullName}
           </p>
-          <div className="flex items-center gap-5 text-ink-subtle">
-            <a href={`mailto:${profile.email}`} aria-label="Email" className="transition-colors hover:text-ink">
-              <Mail className="h-5 w-5" />
-            </a>
-            <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="transition-colors hover:text-ink">
-              <LinkedIn className="h-5 w-5" />
-            </a>
-            <a href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="transition-colors hover:text-ink">
-              <Github className="h-5 w-5" />
-            </a>
-          </div>
+          <p>Leeds, UK · Every figure checked against source</p>
         </Container>
       </footer>
     </section>

@@ -1,64 +1,95 @@
-import { experience, education } from "@/data/content";
-import { Container, Eyebrow } from "./ui";
-import { Reveal } from "./Reveal";
+import type { CSSProperties } from "react";
+import { experience, education, modules } from "@/data/content";
+import { Container, SectionHead, Tick } from "./ui";
+import { RulerTable } from "./RulerTable";
+
+// Ledger entries: a date column on the left, the entry on the right. Each entry
+// ticks off as it scrolls in: its top rule draws across, the red tick draws
+// beside the date, and the text rises in steps (.ledger-entry in globals.css).
+const entry = "ledger-entry grid gap-x-10 gap-y-2 py-8 md:grid-cols-[11rem_1fr]";
+const dateCol =
+  "entry-up flex items-start gap-2 font-mono text-xs uppercase tracking-[0.08em] text-ink-subtle md:pt-1.5";
+const step = (s: number) => ({ "--s": s }) as CSSProperties;
+
+function Rule() {
+  return <span className="entry-rule" aria-hidden="true" />;
+}
 
 export function Experience() {
   return (
-    <section id="experience" className="scroll-mt-20 border-t border-hairline/60 py-20 sm:py-28">
+    <section id="experience" className="border-b border-rule py-20 sm:py-24">
       <Container>
-        <div className="grid gap-14 lg:grid-cols-[1fr_1.4fr]">
-          {/* Left: education + heading */}
-          <div>
-            <Reveal>
-              <Eyebrow>Background</Eyebrow>
-              <h2 className="display-md text-ink">Experience &amp; education.</h2>
-            </Reveal>
+        <SectionHead eyebrow="Experience" title="Experience & education." className="enter" />
 
-            <Reveal delay={120} className="mt-10 rounded-xl border border-hairline bg-surface-1 p-6 lift-edge">
-              <h3 className="text-lg font-medium text-ink">{education.degree}</h3>
-              <p className="mt-1 text-ink-muted">{education.school}</p>
-              <p className="mt-1 text-sm text-ink-subtle">
-                {education.period} · {education.result}
+        <ol className="mt-12">
+          {experience.map((job) => (
+            <li key={`${job.role}-${job.org}`} className={entry}>
+              <Rule />
+              <p className={dateCol}>
+                <Tick className="mt-px h-3.5 w-3.5" />
+                {job.period}
               </p>
-              <ul className="mt-4 space-y-2 border-t border-hairline pt-4">
-                {education.modules.map((m) => (
-                  <li key={m.name} className="flex items-baseline justify-between gap-4 text-sm">
-                    <span className="text-ink-muted">{m.name}</span>
-                    <span className="shrink-0 font-mono text-ink-subtle">{m.grade}</span>
-                  </li>
-                ))}
-              </ul>
-              {education.note && (
-                <p className="mt-4 text-sm text-ink-subtle">{education.note}</p>
-              )}
-            </Reveal>
-          </div>
-
-          {/* Right: experience timeline */}
-          <div className="space-y-8">
-            {experience.map((job, i) => (
-              <Reveal
-                key={`${job.role}-${job.org}`}
-                delay={i * 100}
-                className="border-l border-hairline pl-6"
-              >
-                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                  <h3 className="text-lg font-medium text-ink">{job.role}</h3>
-                  <span className="font-mono text-xs text-ink-subtle">{job.period}</span>
-                </div>
-                <p className="mt-0.5 text-primary/90">{job.org}</p>
-                <ul className="mt-3 space-y-2">
+              <div>
+                <h3 className="entry-up text-xl font-semibold tracking-[-0.01em] text-ink">{job.role}</h3>
+                <p className="entry-up mt-1 text-ink-muted" style={step(1)}>
+                  {job.org}
+                </p>
+                <ul className="entry-up mt-4 space-y-2.5" style={step(2)}>
                   {job.points.map((p, j) => (
-                    <li key={j} className="flex gap-3 text-sm leading-relaxed text-ink-subtle">
-                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-ink-tertiary" />
+                    <li
+                      key={j}
+                      className="relative max-w-3xl pl-5 leading-relaxed text-ink-muted before:absolute before:left-0 before:top-[0.8em] before:h-px before:w-2.5 before:bg-rule-strong"
+                    >
                       {p}
                     </li>
                   ))}
                 </ul>
-              </Reveal>
-            ))}
-          </div>
-        </div>
+              </div>
+            </li>
+          ))}
+
+          <li className={entry}>
+            <Rule />
+            <p className={dateCol}>
+              <Tick className="mt-px h-3.5 w-3.5" />
+              {education.period}
+            </p>
+            <div>
+              <h3 className="entry-up text-xl font-semibold tracking-[-0.01em] text-ink">{education.degree}</h3>
+              <p className="entry-up mt-1 text-ink-muted" style={step(1)}>
+                {education.school} · {education.result}
+              </p>
+              <div className="entry-up mt-5 max-w-2xl" style={step(2)}>
+                <RulerTable>
+                  <table className="relative z-[1] w-full border-collapse text-sm">
+                    <caption className="sr-only">Selected module marks</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col" className="eyebrow pb-2 pl-3 text-left">
+                          Module
+                        </th>
+                        <th scope="col" className="eyebrow pb-2 pr-3 text-right">
+                          Mark
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {modules.map((m) => (
+                        <tr key={m.name} className="border-t border-rule">
+                          <td className="py-2.5 pl-3 pr-4 text-ink-muted">{m.name}</td>
+                          <td className="py-2.5 pr-3 text-right font-mono tabular-nums text-ink">{m.grade}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </RulerTable>
+              </div>
+              <p className="entry-up mt-4 text-sm text-ink-subtle" style={step(3)}>
+                {education.note}
+              </p>
+            </div>
+          </li>
+        </ol>
       </Container>
     </section>
   );

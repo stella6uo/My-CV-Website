@@ -1,25 +1,33 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Newsreader, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { site } from "@/data/content";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
   subsets: ["latin"],
+  style: ["normal", "italic"],
+  axes: ["opsz"],
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
+const plexSans = IBM_Plex_Sans({
+  variable: "--font-plex-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
+});
+
+const plexMono = IBM_Plex_Mono({
+  variable: "--font-plex-mono",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
-  title: "Anson Ng | Finance Operations",
-  description:
-    "Economics & Finance graduate in Leeds, looking for finance operations roles: reconciliations, invoice and purchase order matching, advanced Excel, and automating manual processes.",
+  title: site.title,
+  description: site.description,
   openGraph: {
-    title: "Anson Ng | Finance Operations",
-    description:
-      "Economics & Finance graduate in Leeds: reconciliations, invoice matching, advanced Excel and process automation.",
+    title: site.title,
+    description: site.description,
     type: "website",
   },
 };
@@ -32,11 +40,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${newsreader.variable} ${plexSans.variable} ${plexMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-canvas text-ink">
-        {children}
-      </body>
+      <body className="min-h-full flex flex-col bg-paper text-ink">{children}</body>
     </html>
   );
 }

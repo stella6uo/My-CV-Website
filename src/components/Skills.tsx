@@ -1,35 +1,25 @@
-import { skills } from "@/data/content";
-import { Container, Eyebrow } from "./ui";
-import { Reveal } from "./Reveal";
+import { skills as groups } from "@/data/content";
+import { Container, SectionHead } from "./ui";
 
+// Three ruled columns.
 export function Skills() {
   return (
-    <section id="skills" className="scroll-mt-20 border-t border-hairline/60 py-20 sm:py-28">
+    <section id="skills" className="border-b border-rule py-20 sm:py-24">
       <Container>
-        <Reveal className="mb-12 max-w-2xl">
-          <Eyebrow>Toolkit</Eyebrow>
-          <h2 className="display-md text-ink">Skills.</h2>
-        </Reveal>
+        <SectionHead eyebrow="Skills" title="Skills & tools." className="enter" />
 
-        <div className="grid gap-5 md:grid-cols-3">
-          {skills.map((group, i) => (
-            <Reveal
-              key={group.title}
-              delay={(i % 3) * 90}
-              className="card-glow rounded-xl border border-hairline bg-surface-1 p-6 lift-edge"
-            >
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-ink-subtle">
-                {group.title}
-              </h3>
-              <ul className="mt-4 space-y-2.5">
+        <div className="mt-12 grid gap-10 md:grid-cols-3 md:gap-8">
+          {groups.map((group) => (
+            <div key={group.title} className="enter border-t border-ink">
+              <h3 className="eyebrow pt-4 text-ink">{group.title}</h3>
+              <ul className="mt-3">
                 {group.items.map((item) => (
-                  <li key={item} className="flex items-center gap-2.5 text-ink-muted">
-                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary/70" />
+                  <li key={item} className="border-b border-rule py-2.5 text-ink-muted">
                     {item}
                   </li>
                 ))}
               </ul>
-            </Reveal>
+            </div>
           ))}
         </div>
       </Container>

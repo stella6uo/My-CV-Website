@@ -1,248 +1,567 @@
 @import "tailwindcss";
 
-/* ===== Linear design system tokens (see DESIGN.md) ===== */
+/* ===== Ledger design system tokens (see DESIGN.md) ===== */
 @theme {
-  /* Surface ladder — hierarchy via lift, not shadow */
-  --color-canvas: #010102;
-  --color-surface-1: #08090a;
-  --color-surface-2: #101113;
-  --color-surface-3: #1a1b1e;
-  --color-surface-4: #232428;
-  --color-hairline: #23252a;
-  --color-hairline-strong: #34363c;
+  /* Paper: pale columnar-pad green, never pure white */
+  --color-paper: #e7ede1;
+  --color-paper-deep: #dde5d6;
+  --color-card: #f2f5ee;
 
-  /* Single chromatic accent — lavender-blue */
-  --color-primary: #5e6ad2;
-  --color-primary-hover: #828fff;
-  --color-primary-focus: #5e69d1;
+  /* Ink: green-black, never pure black */
+  --color-ink: #1b2a22;
+  --color-ink-muted: #44564b;
+  --color-ink-subtle: #586a5e;
 
-  /* Text */
-  --color-ink: #f7f8f8;
-  --color-ink-muted: #d0d6e0;
-  --color-ink-subtle: #8a8f98;
-  --color-ink-tertiary: #62666d;
+  /* Rules */
+  --color-rule: #b7c8b2;
+  --color-rule-strong: #8ea389;
 
-  /* Only semantic color on the marketing surface */
-  --color-success: #27a644;
+  /* The only accent: ledger red, for ticks, totals and the margin rule */
+  --color-red: #b3261e;
 
-  --font-sans: var(--font-inter), -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
-  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SF Mono", Menlo, monospace;
+  /* On the one dark band (the figures strip) */
+  --color-on-ink-muted: #aebcab;
+  --color-on-ink-rule: #46594d;
+  --color-red-on-ink: #f08b80;
 
-  /* Radius scale */
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
+  /* Fast in, slow out: every entrance uses this */
+  --ease-ledger: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --font-display: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-plex-sans), "Segoe UI", system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, Consolas, monospace;
 }
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 72px;
 }
 
 body {
-  background: var(--color-canvas);
+  background: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-/* Display type: aggressive negative tracking, weight 600 */
-.display-xl {
-  font-size: clamp(2.5rem, 6vw + 1rem, 5rem); /* 40 → 80px */
-  font-weight: 600;
-  line-height: 1.05;
-  letter-spacing: -0.0375em;
-}
-.display-lg {
-  font-size: clamp(2rem, 3.5vw + 1rem, 3.5rem); /* 32 → 56px */
-  font-weight: 600;
-  line-height: 1.1;
-  letter-spacing: -0.032em;
-}
-.display-md {
-  font-size: clamp(1.75rem, 2vw + 1rem, 2.5rem); /* 28 → 40px */
-  font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.025em;
-}
-/* Oversized hero centerpiece — the "Finance + AI" statement */
-.hero-display {
-  font-size: clamp(3rem, 10vw, 7.5rem); /* 48 → 120px */
-  font-weight: 600;
-  line-height: 1.02;
-  letter-spacing: -0.04em;
-}
-.eyebrow {
-  font-size: 0.8125rem; /* 13px */
-  font-weight: 500;
-  line-height: 1.3;
-  letter-spacing: 0.04em; /* positive tracking marks taxonomy */
-  text-transform: uppercase;
-  color: var(--color-ink-subtle);
+::selection {
+  background: color-mix(in srgb, var(--color-red) 20%, transparent);
 }
 
-/* Subtle top-edge highlight on lifted panels — the "pixel-rendered" feel */
-.lift-edge {
-  box-shadow: inset 0 1px 0 0 rgb(255 255 255 / 0.04);
-}
-
-/* Accessible focus ring per spec: 2px primary-focus at ~50% */
 *:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--color-primary-focus) 60%, transparent);
-  outline-offset: 2px;
-  border-radius: 4px;
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
+}
+.on-ink :focus-visible {
+  outline-color: var(--color-paper);
 }
 
-/* ===== Atmosphere — lean into the lavender accent for warmth ===== */
+/* Component classes live in the components layer so Tailwind utilities can override them. */
+@layer components {
+  /* ===== Type ===== */
 
-/* Headline gradient: bright ink fading to a lavender kiss */
-.text-gradient {
-  background: linear-gradient(180deg, #ffffff 0%, #c7c9e6 58%, #8b8fd6 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  /* Hero headline: light serif, italic second line */
+  .display-hero {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(3.25rem, 7vw + 0.75rem, 6.75rem); /* 52 → 108px */
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    font-variation-settings: "opsz" 72;
+  }
+  .display-hero em {
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  /* Section openers */
+  .display-md {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2rem, 2.4vw + 1.1rem, 3rem); /* 32 → 48px */
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    font-variation-settings: "opsz" 60;
+    text-wrap: balance;
+  }
+
+  /* Taxonomy labels: mono, uppercase, positive tracking */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem; /* 12px */
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-ink-subtle);
+  }
+
+  /* Underlined text links: a faint rule at rest, a red underline draws in on hover */
+  .link {
+    text-decoration: none;
+    background-image:
+      linear-gradient(var(--color-red), var(--color-red)),
+      linear-gradient(var(--color-rule-strong), var(--color-rule-strong));
+    background-repeat: no-repeat;
+    background-position: 0 100%, 0 100%;
+    background-size: 0% 2px, 100% 1px;
+    padding-bottom: 3px;
+  }
+  .link:hover,
+  .link:focus-visible {
+    background-size: 100% 2px, 100% 1px;
+  }
+
+  /* Section links in the nav: no resting line, a red underline draws in on hover */
+  .nav-link {
+    background: linear-gradient(var(--color-red), var(--color-red)) 0 100% / 0% 1.5px no-repeat;
+    padding-bottom: 4px;
+  }
+  .nav-link:hover,
+  .nav-link:focus-visible {
+    background-size: 100% 1.5px;
+  }
+
+  /* ===== Buttons: square, mono, ink ===== */
+  .btn {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 2.75rem;
+    padding: 0 1.15rem;
+    border: 1px solid var(--color-ink);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: background-color 0.2s ease, color 0.3s ease;
+  }
+  .btn-primary {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+  .btn-primary:hover {
+    background: #2c4035;
+  }
+  /* Secondary buttons fill with ink from the bottom on hover */
+  .btn-secondary {
+    color: var(--color-ink);
+  }
+  .btn-secondary::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-ink);
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+  .btn-secondary:hover,
+  .btn-secondary:focus-visible {
+    color: var(--color-paper);
+  }
+  .btn-secondary:hover::before,
+  .btn-secondary:focus-visible::before {
+    transform: none;
+  }
+  /* The arrow on a button nudges toward where it goes */
+  .btn:hover .btn-arrow,
+  .btn:focus-visible .btn-arrow {
+    transform: translate(2px, -2px);
+  }
 }
 
-/* Soft radial glow — sits behind the hero */
-.hero-glow {
-  position: absolute;
-  inset: -25% 0 auto 0;
-  height: 640px;
-  pointer-events: none;
-  z-index: -1;
-  background:
-    radial-gradient(55% 55% at 22% 0%, color-mix(in srgb, var(--color-primary) 24%, transparent) 0%, transparent 70%),
-    radial-gradient(45% 45% at 82% 8%, color-mix(in srgb, #7c5cff 18%, transparent) 0%, transparent 70%);
-  filter: blur(24px);
+/* ===== Page furniture ===== */
+
+/* The red double margin rule down the left of the page (desktop only) */
+.ledger-page {
+  position: relative;
+}
+@media (min-width: 1024px) {
+  .ledger-page::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: max(24px, calc((100% - 1200px) / 2 + 40px));
+    width: 5px;
+    border-left: 1px solid color-mix(in srgb, var(--color-red) 50%, transparent);
+    border-right: 1px solid color-mix(in srgb, var(--color-red) 50%, transparent);
+    pointer-events: none;
+    z-index: 0;
+  }
 }
 
-/* Faint dot grid texture for the dark canvas */
-.dot-grid {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image: radial-gradient(color-mix(in srgb, var(--color-ink) 7%, transparent) 1px, transparent 1px);
-  background-size: 22px 22px;
-  -webkit-mask-image: radial-gradient(75% 55% at 50% 0%, #000 0%, transparent 75%);
-  mask-image: radial-gradient(75% 55% at 50% 0%, #000 0%, transparent 75%);
+/* Faint blue horizontal ruling, used behind the hero only */
+.ruled {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 31px,
+    rgb(64 104 148 / 0.1) 31px 32px
+  );
 }
 
-/* Card accent glow on hover */
-.card-glow {
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
-}
-.card-glow:hover {
-  border-color: color-mix(in srgb, var(--color-primary) 45%, var(--color-hairline));
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--color-primary) 25%, transparent),
-    0 12px 40px -12px color-mix(in srgb, var(--color-primary) 35%, transparent);
+/* Ledger tick: a small red check mark */
+.tick path {
+  fill: none;
+  stroke: var(--color-red);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-/* Eyebrow accent: a small lavender lead-in bar */
-.eyebrow-accent::before {
-  content: "";
+/* Double rule under a total */
+.total-rule {
+  position: relative;
   display: inline-block;
-  width: 18px;
-  height: 1px;
-  margin-right: 10px;
-  vertical-align: middle;
-  background: var(--color-primary);
+}
+.total-rule::after {
+  content: "";
+  position: absolute;
+  left: -0.3em;
+  right: -0.3em;
+  bottom: -0.45em;
+  height: 4px;
+  border-top: 1px solid var(--color-red);
+  border-bottom: 1px solid var(--color-red);
+  transform-origin: right;
 }
 
-/* ===== Motion — restrained, ease-out, reduced-motion aware ===== */
-
-/* Scroll-reveal: rise + fade as elements enter the viewport.
-   Hidden until JS adds .is-visible (IntersectionObserver). */
-.reveal {
+/* A value that was keyed wrong, then corrected. Both sit in the same cell;
+   at rest (and with reduced motion) only the corrected value shows. */
+.swap {
+  display: inline-grid;
+  justify-items: end;
+}
+.swap > * {
+  grid-area: 1 / 1;
+}
+.swap-was {
   opacity: 0;
-  transform: translateY(18px);
-  transition:
-    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, transform;
-}
-.reveal.is-visible {
-  opacity: 1;
-  transform: none;
+  color: var(--color-red);
+  font-weight: 600;
 }
 
-/* Hero entrance: staggered rise-in on load — pure CSS, runs once. */
+/* Hero headline: each line sits in a mask it rises out of. The padding and
+   matching negative margin give the italic ampersand and descenders room
+   (left and bottom only, so the mask never pushes past the right edge). */
+.line-mask {
+  display: block;
+  overflow: hidden;
+  padding: 0 0 0.12em 0.05em;
+  margin: 0 0 -0.12em -0.05em;
+}
+.line-mask > * {
+  display: inline-block;
+}
+
+/* Rolling figures: each digit is a drum of 0-9 twice over, resting on its
+   value (--n = 10 + digit). Without script the figures simply sit there. */
+.drums {
+  display: flex;
+}
+.drums > span,
+.drum-col > span {
+  display: block;
+  height: 1em;
+  line-height: 1;
+}
+.drum {
+  overflow: hidden;
+}
+.drum-col {
+  display: flex;
+  flex-direction: column;
+  transform: translateY(calc(var(--n) * -1em));
+}
+
+/* Ledger entries (Experience): each one has its own top rule, the first in ink */
+.ledger-entry {
+  position: relative;
+}
+.entry-rule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--color-rule);
+  transform-origin: left;
+}
+.ledger-entry:first-child > .entry-rule {
+  background: var(--color-ink);
+}
+
+/* Reading ruler: a band that slides to the row under the mouse */
+.ruler {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--h, 0px);
+  transform: translateY(var(--y, 0px));
+  background: var(--color-paper-deep);
+  border-block: 1px solid var(--color-ink);
+  opacity: 0;
+  pointer-events: none;
+}
+.ruler::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  left: 0;
+  width: 3px;
+  background: var(--color-red);
+}
+[data-ruling] > .ruler {
+  opacity: 1;
+}
+.ruler-table tr[data-on] td:last-child {
+  color: var(--color-red);
+  font-weight: 600;
+}
+
+/* ===== Motion ===== */
+
+@keyframes ledger-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@keyframes ledger-stamp {
+  from {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+}
+@keyframes ledger-was {
+  0%,
+  92% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes ledger-now {
+  0%,
+  92% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes ledger-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes ledger-draw {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes enter-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+@keyframes line-rise {
+  from {
+    transform: translateY(115%);
+  }
+}
+@keyframes intro-fade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+@keyframes drum-roll {
+  from {
+    transform: translateY(0);
+  }
+}
 @keyframes rise-in {
   from {
     opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
+    transform: translateY(14px);
   }
 }
-.rise {
-  opacity: 0;
-  animation: rise-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+@keyframes tick-draw {
+  from {
+    stroke-dashoffset: 12;
+  }
 }
 
-/* Ambient breathing drift behind the hero glow. */
-@keyframes glow-drift {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-    opacity: 0.85;
+@media (prefers-reduced-motion: no-preference) {
+  /* Opening sequence, once on load, pure CSS. The headline lines rise first
+     (readable by about 0.8s), then the summary and buttons, then the ledger
+     card ticks itself off. Everything is done by about 2.6s. */
+  .line-mask > * {
+    animation: line-rise 0.9s var(--ease-ledger) both;
+    animation-delay: var(--d, 0s);
   }
-  50% {
-    transform: translate3d(2.5%, 2%, 0) scale(1.07);
-    opacity: 1;
+  .intro-fade {
+    animation: intro-fade 0.6s var(--ease-ledger) both;
+    animation-delay: var(--d, 0s);
   }
-}
-.hero-glow {
-  animation: glow-drift 14s ease-in-out infinite;
+  .ledger-play .ledger-row {
+    animation: ledger-in 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: calc(var(--i) * 0.2s + 0.9s);
+  }
+  .ledger-play .ledger-row .tick {
+    animation: ledger-stamp 0.3s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+    animation-delay: calc(var(--i) * 0.2s + 1.2s);
+  }
+  .ledger-play .ledger-flag .tick {
+    animation-delay: 2.35s;
+  }
+  .ledger-play .swap-was {
+    animation: ledger-was 1.65s 0.6s linear both;
+  }
+  .ledger-play .swap-now {
+    animation: ledger-now 1.65s 0.6s linear both;
+  }
+  .ledger-play .ledger-note {
+    animation: ledger-fade 0.35s 2.25s both;
+  }
+  .ledger-play .total-rule::after {
+    animation: ledger-draw 0.55s 2.1s cubic-bezier(0.6, 0, 0.2, 1) both;
+  }
+  /* With a flagged row, the total waits for the correction */
+  .ledger-play:has(.ledger-flag) .total-rule::after {
+    animation-delay: 2.7s;
+  }
+
+  /* Rolling figures. RollOnView sets data-roll: "armed" parks the drums on 0
+     while the strip is still below the fold, "play" rolls them to their value. */
+  [data-roll="armed"] .drum-col {
+    transform: translateY(0);
+  }
+  [data-roll="armed"] .figure-note {
+    opacity: 0;
+  }
+  [data-roll="play"] .drum-col {
+    animation: drum-roll 1.1s var(--ease-ledger) both;
+    animation-delay: var(--dl, 0s);
+  }
+  [data-roll="play"] .figure-note {
+    animation: ledger-fade 0.35s both;
+    animation-delay: calc(var(--k) * 0.12s + 1.1s);
+  }
+
+  /* Cursor responses */
+  .link {
+    transition: background-size 0.4s var(--ease-ledger);
+  }
+  .nav-link {
+    transition:
+      color 0.2s ease,
+      background-size 0.4s var(--ease-ledger);
+  }
+  .btn-secondary::before,
+  .btn-arrow {
+    transition: transform 0.35s var(--ease-ledger);
+  }
+  .ruler {
+    transition:
+      transform 0.3s var(--ease-ledger),
+      height 0.3s var(--ease-ledger),
+      opacity 0.2s ease;
+  }
+  .ruler[data-snap] {
+    transition: opacity 0.2s ease;
+  }
+
+  /* Scroll-driven entrances. Content is fully visible where unsupported. */
+  @supports (animation-timeline: view()) {
+    .enter {
+      animation: enter-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+
+    /* Ledger entries tick off as they scroll in: the top rule draws across,
+       the red tick draws beside the date, and the text rises in steps (--s). */
+    .ledger-entry {
+      view-timeline-name: --entry;
+    }
+    .ledger-entry > .entry-rule {
+      animation: ledger-draw linear both;
+      animation-timeline: --entry;
+      animation-range: entry 0% entry 70%;
+    }
+    .ledger-entry .tick path {
+      stroke-dasharray: 12;
+      animation: tick-draw linear both;
+      animation-timeline: --entry;
+      animation-range: entry 35% entry 75%;
+    }
+    .ledger-entry .entry-up {
+      animation: rise-in linear both;
+      animation-timeline: --entry;
+      animation-range: entry calc(5% + var(--s, 0) * 8%) entry calc(50% + var(--s, 0) * 8%);
+    }
+  }
 }
 
-/* Scroll-hint cue — a line that pulses downward */
-@keyframes scroll-cue {
-  0% {
-    transform: scaleY(0.4);
-    transform-origin: top;
-    opacity: 0.3;
+/* ===== Print: the page prints as a tidy CV ===== */
+@media print {
+  @page {
+    margin: 14mm 14mm 16mm;
   }
-  50% {
-    transform: scaleY(1);
-    transform-origin: top;
-    opacity: 1;
-  }
-  100% {
-    transform: scaleY(0.4);
-    transform-origin: bottom;
-    opacity: 0.3;
-  }
-}
-.scroll-cue {
-  animation: scroll-cue 1.8s ease-in-out infinite;
-}
-
-/* Card hover already has card-glow; add a small float. */
-.card-glow:hover {
-  transform: translateY(-3px);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  .reveal,
-  .rise {
-    opacity: 1 !important;
-    transform: none !important;
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
     transition: none !important;
-    animation: none !important;
   }
-  .hero-glow,
-  .scroll-cue,
-  .animate-ping {
-    animation: none !important;
+  html {
+    font-size: 12px;
   }
-  .card-glow:hover {
-    transform: none;
+  body {
+    background: #fff;
+  }
+  .ledger-page::before,
+  .no-print,
+  .ruler {
+    display: none !important;
+  }
+  /* The dark band prints as plain paper and ink */
+  .on-ink {
+    background: #fff !important;
+    color: var(--color-ink) !important;
+  }
+  .on-ink * {
+    color: var(--color-ink) !important;
+    border-color: var(--color-rule) !important;
+  }
+  /* Figures always print on their values, even if the strip never rolled */
+  .drum-col {
+    transform: translateY(calc(var(--n) * -1em)) !important;
+  }
+  .figure-note {
+    opacity: 1 !important;
+  }
+  .ruled {
+    background: none;
+  }
+  section {
+    padding-top: 1.25rem !important;
+    padding-bottom: 1.25rem !important;
+    break-inside: avoid-page;
+  }
+  a {
+    text-decoration: none;
   }
 }

@@ -1,32 +1,27 @@
 import { seeking } from "@/data/content";
-import { Container, Eyebrow } from "./ui";
-import { Reveal } from "./Reveal";
+import { Container, SectionHead } from "./ui";
 
 export function OpenTo() {
   return (
-    <section
-      id="open-to"
-      className="scroll-mt-20 border-t border-hairline/60 py-20 sm:py-28"
-    >
-      <Container>
-        <Reveal className="max-w-2xl">
-          <Eyebrow>Open to work</Eyebrow>
-          <h2 className="display-md text-ink">{seeking.heading}</h2>
-          <p className="mt-4 leading-relaxed text-ink-subtle">{seeking.blurb}</p>
-        </Reveal>
+    <section id="open-to" className="border-b border-rule py-20 sm:py-24">
+      <Container className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+        <div className="enter">
+          <SectionHead eyebrow="Open to work" title={seeking.heading} />
+          <p className="mt-5 max-w-xl leading-relaxed text-ink-muted">{seeking.blurb}</p>
+        </div>
 
-        <div className="mt-8 flex flex-wrap gap-2.5">
-          {seeking.areas.map((area, i) => (
-            <Reveal key={area} delay={i * 70}>
-              <span className="inline-flex items-center gap-2 rounded-full bg-surface-2 px-4 py-2 text-sm text-ink-muted ring-1 ring-hairline">
-                <span
-                  className="h-1.5 w-1.5 rounded-full bg-primary/70"
-                  aria-hidden="true"
-                />
+        <div className="enter self-end">
+          <p className="eyebrow pb-3">{seeking.areasLabel}</p>
+          <ul className="border-t border-ink">
+            {seeking.areas.map((area) => (
+              <li key={area} className="border-b border-rule py-3.5 text-[1.05rem] text-ink">
                 {area}
-              </span>
-            </Reveal>
-          ))}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 font-mono text-xs uppercase tracking-[0.08em] text-ink-subtle">
+            {seeking.learningNow}
+          </p>
         </div>
       </Container>
     </section>

@@ -1,42 +1,31 @@
-import { projects, type Project } from "@/data/content";
-import { Container, Eyebrow, Badge, Button } from "./ui";
+import { projects, projectsIntro, type Project } from "@/data/content";
+import { Container, SectionHead, Button, Tick } from "./ui";
 import { ArrowUpRight } from "./icons";
 import { ScreenshotPanel } from "./ScreenshotPanel";
-import { Reveal } from "./Reveal";
 
-function statusTone(status: string): "live" | "active" | "neutral" {
-  if (/live/i.test(status)) return "live";
-  if (/develop|progress|ongoing/i.test(status)) return "active";
-  return "neutral";
-}
-
-function ProjectRow({ project, flip }: { project: Project; flip: boolean }) {
+function ProjectRow({ project }: { project: Project }) {
+  const live = /live/i.test(project.status);
   return (
-    <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-14">
-      <div className={flip ? "lg:order-2" : ""}>
+    <article className="enter grid gap-8 border-t border-ink pt-8 lg:grid-cols-[1.05fr_1fr] lg:gap-14">
+      <div className="no-print">
         <ScreenshotPanel project={project} />
       </div>
-      <div className={flip ? "lg:order-1" : ""}>
-        <div className="mb-4">
-          <Badge tone={statusTone(project.status)}>{project.status}</Badge>
-        </div>
-        <h3 className="text-[22px] font-medium tracking-tight text-ink">{project.name}</h3>
-        <p className="mt-1 text-ink-muted">{project.tagline}</p>
-        <p className="mt-4 leading-relaxed text-ink-subtle">{project.description}</p>
-
-        <div className="mt-5 flex flex-wrap gap-2">
-          {project.stack.map((tech) => (
-            <span
-              key={tech}
-              className="rounded-md bg-surface-2 px-2.5 py-1 font-mono text-xs text-ink-muted ring-1 ring-hairline"
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
+      <div>
+        <p className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.08em] text-ink-subtle">
+          {live && <Tick className="h-3.5 w-3.5" />}
+          {project.status}
+        </p>
+        <h3 className="mt-3 font-display text-[2rem] leading-[1.05] tracking-[-0.01em] text-ink">
+          {project.name}
+        </h3>
+        <p className="mt-2 text-lg text-ink">{project.tagline}</p>
+        <p className="mt-4 leading-relaxed text-ink-muted">{project.description}</p>
+        <p className="mt-5 font-mono text-xs uppercase leading-relaxed tracking-[0.06em] text-ink-subtle">
+          {project.stack.join(" · ")}
+        </p>
 
         {(project.liveHref || project.repoHref) && (
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="no-print mt-6 flex flex-wrap items-center gap-5">
             {project.liveHref && (
               <Button href={project.liveHref} external withArrow>
                 {project.liveLabel ?? "View live"}
@@ -47,34 +36,30 @@ function ProjectRow({ project, flip }: { project: Project; flip: boolean }) {
                 href={project.repoHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-10 items-center gap-1.5 text-sm font-medium text-ink-subtle transition-colors hover:text-ink"
+                className="link inline-flex items-center gap-1 font-mono text-xs uppercase tracking-[0.06em] text-ink"
               >
-                View code <ArrowUpRight className="h-4 w-4" />
+                View code <ArrowUpRight className="h-3.5 w-3.5" />
               </a>
             )}
           </div>
         )}
       </div>
-    </div>
+    </article>
   );
 }
 
 export function Projects() {
   return (
-    <section id="projects" className="scroll-mt-20 border-t border-hairline/60 py-20 sm:py-28">
+    <section id="projects" className="border-b border-rule py-20 sm:py-24">
       <Container>
-        <Reveal className="mb-14 max-w-2xl">
-          <Eyebrow>Side projects</Eyebrow>
-          <h2 className="display-md text-ink">
-            Tools I&apos;ve built to take the manual work out.
-          </h2>
-        </Reveal>
-
-        <div className="space-y-20 sm:space-y-28">
-          {projects.map((project, i) => (
-            <Reveal key={project.name}>
-              <ProjectRow project={project} flip={i % 2 === 1} />
-            </Reveal>
+        <SectionHead
+          eyebrow={projectsIntro.eyebrow}
+          title={projectsIntro.heading}
+          className="enter max-w-3xl"
+        />
+        <div className="mt-12 space-y-16 sm:space-y-20">
+          {projects.map((project) => (
+            <ProjectRow key={project.name} project={project} />
           ))}
         </div>
       </Container>

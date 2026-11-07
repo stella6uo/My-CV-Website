@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { ArrowUpRight } from "./icons";
 
-// Max content width ~1280px per spec.
+// Content column. On desktop the left padding leaves room for the red margin
+// rule drawn by .ledger-page in globals.css.
 export function Container({
   children,
   className = "",
@@ -10,38 +10,36 @@ export function Container({
   className?: string;
 }) {
   return (
-    <div className={`mx-auto w-full max-w-[1200px] px-6 sm:px-8 ${className}`}>
+    <div className={`relative mx-auto w-full max-w-[1200px] px-5 sm:px-8 lg:pl-20 lg:pr-10 ${className}`}>
       {children}
     </div>
   );
 }
 
-// Section eyebrow — positive tracking marks it as taxonomy (per spec).
-export function Eyebrow({ children }: { children: React.ReactNode }) {
-  return <p className="eyebrow eyebrow-accent mb-3">{children}</p>;
+// Section opener: mono eyebrow over a serif heading.
+export function SectionHead({
+  eyebrow,
+  title,
+  className = "",
+}: {
+  eyebrow: string;
+  title: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={className}>
+      <p className="eyebrow">{eyebrow}</p>
+      <h2 className="display-md mt-3 text-ink">{title}</h2>
+    </div>
+  );
 }
 
-// Status pill — surface-2 bg, rounded-pill (spec: status-badge), with a tone dot.
-type BadgeTone = "live" | "active" | "neutral";
-
-export function Badge({
-  children,
-  tone = "neutral",
-}: {
-  children: React.ReactNode;
-  tone?: BadgeTone;
-}) {
-  const dot =
-    tone === "live"
-      ? "bg-success"
-      : tone === "active"
-        ? "bg-primary"
-        : "bg-ink-tertiary";
+// The ledger tick: a small red check mark.
+export function Tick({ className = "h-3.5 w-3.5" }: { className?: string }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-surface-2 px-2.5 py-1 text-xs font-medium text-ink-muted ring-1 ring-hairline">
-      <span className={`h-1.5 w-1.5 rounded-full ${dot}`} aria-hidden="true" />
-      {children}
-    </span>
+    <svg className={`tick inline-block shrink-0 ${className}`} viewBox="0 0 12 12" aria-hidden="true">
+      <path d="M2 6.5l2.6 2.6L10 3.5" />
+    </svg>
   );
 }
 
@@ -53,7 +51,7 @@ type ButtonProps = {
   withArrow?: boolean;
 };
 
-// button-primary / button-secondary — 8px radius, never pill (spec).
+// Square, mono, ink. Plain anchors: every target is a file, mailto or another site.
 export function Button({
   href,
   children,
@@ -61,32 +59,14 @@ export function Button({
   external = false,
   withArrow = false,
 }: ButtonProps) {
-  const base =
-    "group inline-flex h-10 items-center gap-1.5 rounded-md px-4 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0";
-  const styles =
-    variant === "primary"
-      ? "bg-primary text-white hover:bg-primary-hover hover:shadow-[0_8px_24px_-8px_color-mix(in_srgb,var(--color-primary)_70%,transparent)]"
-      : "bg-surface-1 text-ink ring-1 ring-hairline hover:ring-hairline-strong hover:bg-surface-2";
-
-  const content = (
-    <>
-      {children}
-      {withArrow && (
-        <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-      )}
-    </>
-  );
-
-  if (external) {
-    return (
-      <a href={href} target="_blank" rel="noopener noreferrer" className={`${base} ${styles}`}>
-        {content}
-      </a>
-    );
-  }
   return (
-    <Link href={href} className={`${base} ${styles}`}>
-      {content}
-    </Link>
+    <a
+      href={href}
+      className={`btn ${variant === "primary" ? "btn-primary" : "btn-secondary"}`}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+    >
+      {children}
+      {withArrow && <ArrowUpRight className="btn-arrow h-3.5 w-3.5" />}
+    </a>
   );
 }

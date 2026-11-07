@@ -1,163 +1,147 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
-import { profile, languages } from "@/data/content";
-import { Container, Button } from "./ui";
+import { Fragment, type CSSProperties, type ReactNode } from "react";
+import { profile, languages, hero, type LedgerExample } from "@/data/content";
+import { Container, Button, Tick } from "./ui";
 import { Mail, LinkedIn } from "./icons";
 
-const clamp = (n: number, min: number, max: number) =>
-  Math.min(Math.max(n, min), max);
-const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
-
-// Total scroll length of the pinned intro (in viewport heights).
-const SCROLL_LENGTH = 2.2;
+// Start time for one step of the opening sequence (see .line-mask and
+// .intro-fade in globals.css).
+const at = (seconds: number) => ({ "--d": `${seconds}s` }) as CSSProperties;
 
 export function Hero() {
-  const ref = useRef<HTMLElement | null>(null);
-  const ticking = useRef(false);
-  const [progress, setProgress] = useState(0);
-  const [reduced, setReduced] = useState(false);
-
-  // Respect reduced-motion: render everything visible, no pinning.
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const apply = () => setReduced(mq.matches);
-    apply();
-    mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
-  }, []);
-
-  // Map scroll position within the tall section to 0..1 progress.
-  useEffect(() => {
-    if (reduced) return;
-    const compute = () => {
-      const el = ref.current;
-      if (!el) return;
-      const total = el.offsetHeight - window.innerHeight;
-      const scrolled = clamp(-el.getBoundingClientRect().top, 0, total);
-      setProgress(total > 0 ? scrolled / total : 0);
-      ticking.current = false;
-    };
-    const onScroll = () => {
-      if (ticking.current) return;
-      ticking.current = true;
-      requestAnimationFrame(compute);
-    };
-    compute();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, [reduced]);
-
-  // Sub-range of progress → eased 0..1 for each stage.
-  const seg = (a: number, b: number) =>
-    reduced ? 1 : easeOut(clamp((progress - a) / (b - a), 0, 1));
-
-  const join = seg(0.04, 0.22); // second headline line joins
-  const name = seg(0.26, 0.44); // name + eyebrow
-  const headline = seg(0.48, 0.68); // descriptive line
-  const cta = seg(0.56, 0.78); // buttons + languages
-  const hint = reduced ? 0 : 1 - clamp(progress / 0.08, 0, 1);
-
   return (
-    <section
-      ref={ref}
-      id="top"
-      className="relative"
-      style={{ height: reduced ? "auto" : `${SCROLL_LENGTH * 100}vh` }}
-    >
-      <div
-        className={`${
-          reduced ? "relative min-h-screen" : "sticky top-0 h-screen"
-        } flex items-center overflow-hidden`}
-      >
-        <div className="hero-glow" aria-hidden="true" />
-        <div className="dot-grid" aria-hidden="true" />
-
-        <Container className="flex flex-col items-center py-24 text-center">
-          {/* Stage 1 + 2 — lead line loads, second line joins on scroll */}
-          <h1 className="rise hero-display">
-            <span className="block text-gradient">{profile.heroLead}</span>{" "}
-            <span
-              className="block text-primary"
-              style={{
-                opacity: join,
-                transform: `translateY(${(1 - join) * 0.35}em)`,
-              }}
-            >
-              {profile.heroJoin}
+    <section id="top" className="ruled border-b border-rule">
+      <Container className="grid items-center gap-12 py-16 sm:py-20 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:py-24">
+        <div>
+          <p className="eyebrow intro-fade">
+            {profile.name} · {profile.headline} · {profile.location}
+          </p>
+          <h1 className="display-hero mt-6 text-ink">
+            <span className="line-mask">
+              <span style={at(0.1)}>{hero.lead}</span>
+            </span>
+            <span className="line-mask">
+              <em style={at(0.18)}>{hero.join}</em>
             </span>
           </h1>
-
-          {/* Stage 3 — name + eyebrow */}
-          <div
-            style={{
-              opacity: name,
-              transform: `translateY(${(1 - name) * 24}px)`,
-            }}
-            className="mt-10"
-          >
-            <p className="eyebrow eyebrow-accent inline-flex">
-              {profile.location} · Available immediately
-            </p>
-            <p className="display-md mt-3 text-ink">{profile.name}</p>
-          </div>
-
-          {/* Stage 4 — headline */}
-          <p
-            style={{
-              opacity: headline,
-              transform: `translateY(${(1 - headline) * 24}px)`,
-            }}
-            className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-muted"
-          >
-            {profile.subtagline}
+          <p className="intro-fade mt-7 max-w-xl text-lg leading-relaxed text-ink-muted" style={at(0.55)}>
+            {hero.summary}
           </p>
 
-          {/* Stage 4 — buttons + languages */}
-          <div
-            style={{
-              opacity: cta,
-              transform: `translateY(${(1 - cta) * 24}px)`,
-            }}
-            className="mt-9 flex flex-col items-center gap-7"
-          >
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <Button href={profile.cvHref} external withArrow>
-                Download CV
-              </Button>
-              <Button href={`mailto:${profile.email}`} variant="secondary">
-                <Mail className="h-4 w-4" />
-                Email me
-              </Button>
-              <Button href={profile.linkedin} variant="secondary" external>
-                <LinkedIn className="h-4 w-4" />
-                LinkedIn
-              </Button>
-            </div>
-            <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-ink-subtle">
-              {languages.map((l) => (
-                <span key={l}>{l}</span>
-              ))}
-            </div>
+          <div className="intro-fade no-print mt-9 flex flex-wrap gap-3" style={at(0.75)}>
+            <Button href={profile.cvHref} external withArrow>
+              Download CV
+            </Button>
+            <Button href={`mailto:${profile.email}`} variant="secondary">
+              <Mail className="h-4 w-4" />
+              Email me
+            </Button>
+            <Button href={profile.linkedin} variant="secondary" external>
+              <LinkedIn className="h-4 w-4" />
+              LinkedIn
+            </Button>
           </div>
-        </Container>
 
-        {/* Scroll hint — fades out as soon as they start */}
-        {!reduced && (
-          <div
-            className="pointer-events-none absolute inset-x-0 bottom-8 flex flex-col items-center gap-2 text-ink-subtle"
-            style={{ opacity: hint }}
-            aria-hidden="true"
-          >
-            <span className="text-xs uppercase tracking-[0.2em]">Scroll</span>
-            <span className="scroll-cue h-8 w-px bg-gradient-to-b from-ink-subtle to-transparent" />
-          </div>
-        )}
-      </div>
+          <p className="intro-fade mt-7 font-mono text-xs uppercase tracking-[0.08em] text-ink-subtle" style={at(0.85)}>
+            {languages.join(" · ")}
+          </p>
+        </div>
+
+        <LedgerCard ledger={hero.ledger} />
+      </Container>
     </section>
+  );
+}
+
+// A wrong value and its correction share one cell. CSS shows the wrong one
+// first, then the correction; at rest only the correction is visible.
+function Swap({ was, now }: { was: string; now: string }) {
+  return (
+    <span className="swap">
+      <span className="swap-was" aria-hidden="true">
+        {was}
+      </span>
+      <span className="swap-now">{now}</span>
+    </span>
+  );
+}
+
+// The opening check. Plays once on load (pure CSS, see .ledger-play in
+// globals.css): rows tick off, the flagged row is caught and corrected, and a
+// red double rule draws under the total.
+function LedgerCard({ ledger }: { ledger: LedgerExample }) {
+  const cols = ledger.head.length;
+  const align = (c: number) => (c === 0 ? "text-left" : "pl-3 text-right");
+
+  return (
+    <div className="ledger-play min-w-0 border border-rule bg-card/70 p-4 sm:p-7">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-ink pb-2.5 font-mono text-[0.7rem] uppercase tracking-[0.1em]">
+        <span>{ledger.title}</span>
+        <span className="text-ink-subtle">{ledger.tag}</span>
+      </div>
+
+      <table className="w-full border-collapse font-mono text-[0.8rem] tabular-nums sm:text-sm">
+        <caption className="sr-only">{ledger.caption}</caption>
+        <thead>
+          <tr>
+            {ledger.head.map((h, c) => (
+              <th
+                key={h}
+                scope="col"
+                className={`border-b border-rule pb-2 pt-4 font-medium text-ink-subtle ${align(c)}`}
+              >
+                {h}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {ledger.rows.map((row, r) => {
+            const flag = ledger.flag?.row === r ? ledger.flag : undefined;
+            const delay = { "--i": r } as CSSProperties;
+            return (
+              <Fragment key={row[0]}>
+                <tr className={`ledger-row ${flag ? "ledger-flag" : ""}`} style={delay}>
+                  {row.map((cell, c) => {
+                    const last = c === row.length - 1;
+                    let content: ReactNode = cell;
+                    if (flag && last) content = <Swap was={flag.diff} now={cell} />;
+                    else if (flag?.swap?.col === c) content = <Swap was={flag.swap.wrong} now={cell} />;
+                    return (
+                      <td
+                        key={c}
+                        className={`${c === 0 ? "" : "whitespace-nowrap"} ${flag ? "pb-1 pt-2.5" : "border-b border-rule py-2.5"} ${align(c)}`}
+                      >
+                        {content}
+                        {last && <Tick className="ml-1.5 h-3.5 w-3.5 align-[-2px]" />}
+                      </td>
+                    );
+                  })}
+                </tr>
+                {flag && (
+                  <tr className="ledger-row" style={delay}>
+                    <td colSpan={cols} className="border-b border-rule pb-2.5 font-sans text-xs leading-snug text-red">
+                      <span className="ledger-note inline-block">{flag.note}</span>
+                    </td>
+                  </tr>
+                )}
+              </Fragment>
+            );
+          })}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td className="pt-4 text-left font-semibold">{ledger.total.label}</td>
+            {Array.from({ length: cols - 2 }, (_, i) => (
+              <td key={i} />
+            ))}
+            <td className="pl-3 pt-4 text-right font-semibold">
+              <span className="total-rule">
+                {ledger.flag ? <Swap was={ledger.flag.diff} now={ledger.total.value} /> : ledger.total.value}
+              </span>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
   );
 }
