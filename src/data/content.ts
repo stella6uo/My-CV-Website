@@ -127,8 +127,8 @@ export type Experience = {
 
 export const experience: Experience[] = [
   {
-    // TODO: confirm title and end date (sometimes described as an internship).
-    role: "Financial Research Assistant",
+    // An internship; Financial Research Assistant is the title (confirmed 8 Nov 2026).
+    role: "Financial Research Assistant (Internship)",
     org: "GNS Intelligent Technology (HK) Ltd · Remote",
     period: "Jan 2026 – Present",
     points: [
