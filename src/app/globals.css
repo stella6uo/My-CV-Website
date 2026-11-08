@@ -251,14 +251,13 @@ body {
   font-weight: 600;
 }
 
-/* Hero headline: each line sits in a mask it rises out of. The padding and
-   matching negative margin give the italic ampersand and descenders room
-   (left and bottom only, so the mask never pushes past the right edge). */
+/* Hero headline: each line sits in a mask it rises out of. The line height
+   (0.95) is tighter than the letters, so the mask clips only its bottom edge,
+   just below the descenders. Tops, the italic ampersand and the right-hand
+   overhang are never cut. clip-path doesn't change layout. */
 .line-mask {
   display: block;
-  overflow: hidden;
-  padding: 0 0 0.12em 0.05em;
-  margin: 0 0 -0.12em -0.05em;
+  clip-path: inset(-0.3em -0.3em -0.12em -0.3em);
 }
 .line-mask > * {
   display: inline-block;
@@ -379,9 +378,10 @@ body {
     transform: translateY(16px);
   }
 }
+/* 130% starts the letter tops below the mask's clip edge (1.07em down). */
 @keyframes line-rise {
   from {
-    transform: translateY(115%);
+    transform: translateY(130%);
   }
 }
 @keyframes intro-fade {
