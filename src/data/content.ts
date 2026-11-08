@@ -138,7 +138,7 @@ export const experience: Experience[] = [
     ],
   },
   {
-    role: "Inventory & E-commerce Operations Coordinator",
+    role: "Inventory & E-commerce Operations Coordinator (Part-time)",
     org: "Sheep Mai Mai · Remote",
     period: "Apr 2026 – Present",
     points: [
@@ -149,7 +149,7 @@ export const experience: Experience[] = [
     ],
   },
   {
-    role: "Barista",
+    role: "Barista (Part-time)",
     org: "London Coffee Festival",
     period: "May 2026",
     points: [
