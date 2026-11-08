@@ -52,6 +52,9 @@ numbers. Don't add a second one.
 ## Layout
 - Content column max 1200px. Desktop left padding leaves room for the red
   double margin rule (`.ledger-page::before`).
+- Desktop layout starts at 960px (`--breakpoint-lg: 60rem`, not Tailwind's
+  1024px), so small laptop windows and browsers zoomed to 150-175% still get
+  two columns instead of the stacked tablet layout.
 - Faint blue horizontal ruling (`.ruled`) behind the hero only.
 - Sections are separated by full-width rules; each section opens with a mono
   eyebrow over a serif heading.

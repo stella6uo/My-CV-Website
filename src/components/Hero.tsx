@@ -10,9 +10,9 @@ const at = (seconds: number) => ({ "--d": `${seconds}s` }) as CSSProperties;
 export function Hero() {
   return (
     <section id="top" className="ruled border-b border-rule">
-      <Container className="grid items-center gap-12 py-16 sm:py-20 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:py-24">
+      <Container className="grid items-center gap-12 py-16 sm:py-20 lg:grid-cols-[1.1fr_1fr] lg:gap-12 lg:py-24 xl:gap-16">
         <div>
-          <p className="eyebrow intro-fade">
+          <p className="eyebrow intro-fade text-balance">
             {profile.name} · {profile.headline} · {profile.location}
           </p>
           <h1 className="display-hero mt-6 text-ink">
@@ -73,7 +73,7 @@ function LedgerCard({ ledger }: { ledger: LedgerExample }) {
   const align = (c: number) => (c === 0 ? "text-left" : "pl-3 text-right");
 
   return (
-    <div className="ledger-play min-w-0 border border-rule bg-card/70 p-4 sm:p-7">
+    <div className="ledger-play min-w-0 border border-rule bg-card/70 p-4 sm:p-7 lg:p-5 xl:p-7">
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-ink pb-2.5 font-mono text-[0.7rem] uppercase tracking-[0.1em]">
         <span>{ledger.title}</span>
         <span className="text-ink-subtle">{ledger.tag}</span>

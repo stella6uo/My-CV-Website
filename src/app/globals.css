@@ -27,6 +27,10 @@
   /* Fast in, slow out: every entrance uses this */
   --ease-ledger: cubic-bezier(0.16, 1, 0.3, 1);
 
+  /* Desktop layout from 960px (Tailwind's default is 1024px), so small laptop
+     windows and browsers zoomed to 150-175% still get the two-column layout. */
+  --breakpoint-lg: 60rem;
+
   --font-display: var(--font-newsreader), Georgia, "Times New Roman", serif;
   --font-sans: var(--font-plex-sans), "Segoe UI", system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, Consolas, monospace;
@@ -182,7 +186,7 @@ body {
 .ledger-page {
   position: relative;
 }
-@media (min-width: 1024px) {
+@media (min-width: 60rem) {
   .ledger-page::before {
     content: "";
     position: absolute;
